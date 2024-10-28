@@ -1,14 +1,16 @@
-# Usar uma imagem base do Java
-FROM openjdk:17-jdk-slim
-
-# Definir o diretório de trabalho dentro do contêiner
+# Etapa de construção com uma imagem Gradle
+FROM gradle:7.5.0-jdk17 AS builder
 WORKDIR /app
+COPY . .
+RUN gradle build --no-daemon
 
-# Copiar o arquivo JAR gerado pelo Gradle para o contêiner
-COPY build/libs/snackAPI-0.0.1-SNAPSHOT.jar /app/app.jar
+# Etapa final: usa uma imagem mais leve
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=builder /app/build/libs/snackAPI-0.0.1-SNAPSHOT.jar /app/app.jar
 
-# Expõe a porta 8080 (a porta padrão do Spring Boot)
+# Exponha a porta padrão
 EXPOSE 8080
 
-# Comando para rodar a aplicação
+# Comando para iniciar a aplicação
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
