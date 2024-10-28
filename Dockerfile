@@ -1,16 +1,17 @@
-# Etapa de construção com uma imagem Gradle
+# Etapa de construção: usa uma imagem do Gradle para compilar o projeto
 FROM gradle:7.5.0-jdk17 AS builder
 WORKDIR /app
 COPY . .
 RUN gradle build --no-daemon
 
-# Etapa final: usa uma imagem mais leve
+# Etapa final: usa uma imagem mais leve apenas com o JDK
 FROM openjdk:17-jdk-slim
 WORKDIR /app
-COPY --from=builder /app/build/libs/snackAPI-0.0.1-SNAPSHOT.jar /app/app.jar
+# Copia o JAR gerado na etapa de construção
+COPY --from=builder /app/build/libs/*.jar /app/app.jar
 
-# Exponha a porta padrão
+# Expõe a porta padrão do Spring Boot
 EXPOSE 8080
 
-# Comando para iniciar a aplicação
+# Comando para rodar a aplicação
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
