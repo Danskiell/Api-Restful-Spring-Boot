@@ -10,6 +10,8 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    private static final String IMAGE_DIRECTORY = "";
+
     public List<Produto> getAllProdutos() {
         return produtoRepository.findAll();
     }
@@ -26,6 +28,9 @@ public class ProdutoService {
         produtoRepository.deleteById(id);
     }
 
+    public List<Produto> buscarProdutosPorCategoria(String categoria) {
+        return produtoRepository.findByCategoria(categoria);
+    }
 
 
 }

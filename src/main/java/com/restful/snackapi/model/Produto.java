@@ -17,6 +17,12 @@ public class Produto {
     @Column(name = "qntd_Produto", nullable = false)
     private Integer qntd_Produto;
 
+    @Column(name = "categoria", nullable = false)
+    private String categoria;
+
+    @Column(name = "descricao", nullable = false)
+    private String descricao;
+
     @ManyToOne
     @JoinColumn(name = "fk_Movimentacao_Id_Mov", nullable = false)
     private Movimentacao movimentacao;
@@ -24,6 +30,9 @@ public class Produto {
     @ManyToOne
     @JoinColumn(name = "fk_categProd_id_Categ", nullable = false)
     private Categ_Prod categ_prod;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     public Long getId_Produto() {
         return id_Produto;
@@ -72,4 +81,29 @@ public class Produto {
     public void setCateg_prod(Categ_Prod categ_prod) {
         this.categ_prod = categ_prod;
     }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 }
+
