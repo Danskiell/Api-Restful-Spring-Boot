@@ -1,4 +1,5 @@
 package com.restful.snackapi.model;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -23,16 +24,10 @@ public class Produto {
     @Column(name = "descricao", nullable = false)
     private String descricao;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_Movimentacao_Id_Mov", nullable = false)
-    private Movimentacao movimentacao;
-
-    @ManyToOne
-    @JoinColumn(name = "fk_categProd_id_Categ", nullable = false)
-    private Categ_Prod categ_prod;
-
     @Column(name = "image_url")
     private String imageUrl;
+
+    // Getters e setters omitidos por brevidade
 
     public Long getId_Produto() {
         return id_Produto;
@@ -66,22 +61,6 @@ public class Produto {
         this.qntd_Produto = qntd_Produto;
     }
 
-    public Movimentacao getMovimentacao() {
-        return movimentacao;
-    }
-
-    public void setMovimentacao(Movimentacao movimentacao) {
-        this.movimentacao = movimentacao;
-    }
-
-    public Categ_Prod getCateg_prod() {
-        return categ_prod;
-    }
-
-    public void setCateg_prod(Categ_Prod categ_prod) {
-        this.categ_prod = categ_prod;
-    }
-
     public String getCategoria() {
         return categoria;
     }
@@ -106,4 +85,3 @@ public class Produto {
         this.descricao = descricao;
     }
 }
-
