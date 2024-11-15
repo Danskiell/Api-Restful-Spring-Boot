@@ -8,11 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
-
 @Configuration
 @EnableWebSecurity
-
 public class SecurityConfig {
 
     @Bean
@@ -20,8 +17,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/cadastro/**", "/api/login/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/cadastro/**", "/api/login/**", "/produtos/**").permitAll() // Permite acesso ao endpoint de produtos
+                        .anyRequest().authenticated() // Exige autenticação para as outras rotas
                 );
         return http.build();
     }
@@ -30,6 +27,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-
 }

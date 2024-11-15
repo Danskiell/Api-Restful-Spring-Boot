@@ -97,10 +97,9 @@ public class ProdutoController {
 
     // Filtrnado categoria
     @GetMapping("/categoria")
-    public ResponseEntity<List<Produto>> obterProdutosPorCategoria(@PathVariable String categoria) {
+    public ResponseEntity<List<Produto>> obterProdutosPorCategoria(@RequestParam String categoria) {
         List<Produto> produtos = produtoService.buscarProdutosPorCategoria(categoria);
         return ResponseEntity.ok(produtos);
-
     }
 }
 
