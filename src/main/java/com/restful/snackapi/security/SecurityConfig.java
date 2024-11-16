@@ -7,29 +7,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")  // Permite todas as origens
-                .allowedMethods("*")  // Permite todos os métodos HTTP (GET, POST, PUT, DELETE, etc)
-                .allowedHeaders("*")  // Permite todos os cabeçalhos
-                .allowCredentials(false);  // Não permite credenciais, como cookies ou cabeçalhos de autenticação
-    }
-
+public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll() // Permite acesso ao endpoint de produtos
+                        .requestMatchers("/api/cadastro/**", "/api/login/**", "/produtos/**").permitAll() // Permite acesso ao endpoint de produtos
                         .anyRequest().authenticated() // Exige autenticação para as outras rotas
                 );
         return http.build();

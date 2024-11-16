@@ -41,7 +41,8 @@ public class ProdutoController {
             @RequestParam("descricao") String descricao,
             @RequestParam("preco") Double preco,
             @RequestParam("categoria") String categoria,
-            @RequestParam("imagem") MultipartFile imagem) {
+            @RequestParam("imagem") MultipartFile imagem,
+            @RequestParam("quantidade") Integer quantidade) {  // Adicionado parâmetro de quantidade
 
         try {
             // Upload da imagem e obtenção da URL
@@ -49,10 +50,11 @@ public class ProdutoController {
 
             Produto produto = new Produto();
             produto.setNome_Produto(nome);
-            produto.setDescricao  (descricao);
+            produto.setDescricao(descricao);
             produto.setPreco_Produto(preco);
             produto.setCategoria(categoria);
-            produto.setImageUrl(imageUrl);  // Armazenando a URL da imagem
+            produto.setImageUrl(imageUrl);
+            produto.setQntd_Produto(quantidade);  // Definindo a quantidade do produto
 
             Produto savedProduto = produtoService.saveProduto(produto);
             return ResponseEntity.ok(savedProduto);
@@ -61,6 +63,7 @@ public class ProdutoController {
         }
     }
 
+
     // Atualizando um produto
     @PutMapping("/{id}")
     public ResponseEntity<Produto> updateProduto(@PathVariable Long id, @RequestBody Produto produto) {
@@ -68,9 +71,13 @@ public class ProdutoController {
         if (existingProduto == null) {
             return ResponseEntity.notFound().build();
         }
+
         produto.setId_Produto(id);
-        return ResponseEntity.ok(produtoService.saveProduto(produto));
+        // Atualizando quantidade
+        existingProduto.setQntd_Produto(produto.getQntd_Produto());  // Atualizando a quantidade
+        return ResponseEntity.ok(produtoService.saveProduto(existingProduto));
     }
+
 
     // Deletando um produto
     @DeleteMapping("/{id}")
