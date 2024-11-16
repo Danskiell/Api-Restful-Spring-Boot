@@ -85,6 +85,18 @@ public class ProdutoController {
         }
 
     }
+
+    // Buscando produtos por categoria
+    @GetMapping("/categoria/{categoria}")
+    public ResponseEntity<List<Produto>> getProdutosByCategoria(@PathVariable String categoria) {
+        List<Produto> produtos = produtoService.buscarProdutosPorCategoria(categoria);
+        if (produtos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(produtos);
+    }
+
 }
+
 
 
