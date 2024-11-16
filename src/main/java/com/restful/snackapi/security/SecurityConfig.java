@@ -7,36 +7,43 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
-    public class SecurityConfig implements WebMvcConfigurer {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**")
-                    .allowedOrigins("*")  // Permite todas as origens
-                    .allowedMethods("*")  // Permite todos os métodos HTTP (GET, POST, PUT, DELETE, etc)
-                    .allowedHeaders("*")  // Permite todos os cabeçalhos
-                    .allowCredentials(false);  // Não permite credenciais, como cookies ou cabeçalhos de autenticação
-        }
+public class SecurityConfig {
 
+    // Configuração global de CORS
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(false);
+            }
+        };
+    }
+
+    // Configuração de segurança do Spring Security
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // Desativa CSRF para simplificar testes
+                .cors(cors -> cors.configure(http)) // Integra configuração de CORS
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/cadastro/**", "/api/login/**", "/produtos/**").permitAll() // Permite acesso ao endpoint de produtos
-                        .anyRequest().authenticated() // Exige autenticação para as outras rotas
-                );
+                        .requestMatchers("/api/cadastro/**", "/api/login/**", "/api/produtos/**").permitAll()
+                        .anyRequest().authenticated());
         return http.build();
     }
 
+    // Encoder de senha
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
-
