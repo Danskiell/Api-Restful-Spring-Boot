@@ -63,22 +63,6 @@ public class ProdutoController {
         }
     }
 
-
-    // Atualizando um produto
-    @PutMapping("/{id}")
-    public ResponseEntity<Produto> updateProduto(@PathVariable Long id, @RequestBody Produto produto) {
-        Produto existingProduto = produtoService.getProdutoById(id);
-        if (existingProduto == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        produto.setId_Produto(id);
-        // Atualizando quantidade
-        existingProduto.setQntd_Produto(produto.getQntd_Produto());  // Atualizando a quantidade
-        return ResponseEntity.ok(produtoService.saveProduto(existingProduto));
-    }
-
-
     // Deletando um produto
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduto(@PathVariable Long id) {
@@ -100,13 +84,6 @@ public class ProdutoController {
             return ResponseEntity.status(500).body("Erro ao fazer o upload de imagem");
         }
 
-    }
-
-    // Filtrnado categoria
-    @GetMapping("/categoria")
-    public ResponseEntity<List<Produto>> obterProdutosPorCategoria(@RequestParam String categoria) {
-        List<Produto> produtos = produtoService.buscarProdutosPorCategoria(categoria);
-        return ResponseEntity.ok(produtos);
     }
 }
 
