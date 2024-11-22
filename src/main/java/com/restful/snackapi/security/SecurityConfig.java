@@ -36,8 +36,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Desativa CSRF para simplificar testes
                 .cors(cors -> cors.configure(http)) // Integra configuração de CORS
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/cadastro/**", "/api/login/**", "/api/produtos/**", "/api/pedidos/**").permitAll()
-                        .anyRequest().authenticated());
+                        .requestMatchers("/api/cadastro/**", "/api/login/**", "/api/produtos/**", "/api/pedidos/**").permitAll() // Permite acesso a esses endpoints sem autenticação
+                        .anyRequest().authenticated()); // Todos os outros endpoints exigem autenticação
         return http.build();
     }
 
