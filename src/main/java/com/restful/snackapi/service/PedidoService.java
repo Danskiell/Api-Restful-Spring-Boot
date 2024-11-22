@@ -4,6 +4,7 @@ import com.restful.snackapi.model.Pedido;
 import com.restful.snackapi.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -16,8 +17,12 @@ public class PedidoService {
     }
 
     public Pedido salvarPedido(Pedido pedido) {
+        if (pedido.getDataPedido() == null) {
+            pedido.setDataPedido(LocalDate.now());
+        }
         return pedidoRepository.save(pedido);
     }
+
 
     public List<Pedido> listarPedidos() {
         return pedidoRepository.findAll();
